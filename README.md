@@ -22,6 +22,6 @@ The Chat Bot App is a Flutter-based application that utilizes the Gemini API for
 - **Image Picker**: Flutter package for selecting and sending images.
 
 
-![Chat Bot App Screenshot](assets/images/ss1.png)
-![Chat Bot App Screenshot](assets/images/ss2.png)
+![Chat Bot App Screenshot](assets/images/ss11.png)
+![Chat Bot App Screenshot](assets/images/ss22.png)
 
