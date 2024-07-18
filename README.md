@@ -21,14 +21,4 @@ The Chat Bot App is a Flutter-based application that utilizes the Gemini API for
 - **DashChat**: Flutter package for implementing the messaging interface.
 - **Image Picker**: Flutter package for selecting and sending images.
 
-## Installation
 
-1. Clone the repository:
-   ```bash
-   Navigate to the project directory:
-2 .Navigate to the project directory
-cd ChatBotApp
-3.Install dependencies:
-flutter pub get
-4.Run the app:
-flutter run
