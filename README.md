@@ -1,16 +1,28 @@
-# ai_bot
+# Chat Bot App
 
-A new Flutter project.
+## Overview
 
-## Getting Started
+The Chat Bot App is a Flutter-based application that utilizes the Gemini API for processing user queries and providing responses. It allows users to type messages or send images whose descriptions they want to know. The app features a user-friendly interface using the Gemini package and includes functionality for both light and dark modes.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+### Messaging
+- **Text Messages**: Users can type messages to ask questions or seek information.
+- **Image Analysis**: Supports sending images to receive descriptions using image picker functionality.
+- **Response Processing**: Utilizes the Gemini API to process user queries and generate responses.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### UI Design
+- **DashChat Integration**: Implements DashChat for a modern and intuitive messaging UI experience.
+- **Light and Dark Modes**: Supports both light and dark themes for user preference and usability.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Technologies Used
+- **Flutter**: Framework for building the app.
+- **Gemini API**: Backend service for natural language processing and response generation.
+- **DashChat**: Flutter package for implementing the messaging interface.
+- **Image Picker**: Flutter package for selecting and sending images.
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/ChatBotApp.git
