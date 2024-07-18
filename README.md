@@ -23,3 +23,5 @@ The Chat Bot App is a Flutter-based application that utilizes the Gemini API for
 
 
 ![Chat Bot App Screenshot](assets/images/Screenshot_1721316750.png)
+![Chat Bot App Screenshot](assets/images/Screenshot_1721316797.png)
+
