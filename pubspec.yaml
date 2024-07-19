@@ -35,6 +35,8 @@ dependencies:
   dash_chat_2: ^0.0.21 
   connectivity: ^3.0.6
   animate_do: ^3.3.4
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
 
 dev_dependencies:
 
