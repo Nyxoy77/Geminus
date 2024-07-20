@@ -10,18 +10,21 @@ class AuthServices {
 
   AuthServices() {}
 
-  Future<void> login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     try {
       final UserCredential credential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
       if (credential.user != null) {
         _user = credential.user;
+        return true ;
       } else {
         _user = null;
       }
+      
     } catch (e) {
       print(e);
     }
+    return false;
   }
 
 
