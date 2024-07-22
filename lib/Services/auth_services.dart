@@ -5,10 +5,12 @@ class AuthServices {
   User? _user;
 
   User? get user {
-    return user;
+    return _user;
   }
 
-  AuthServices() {}
+  AuthServices() {
+    _firebaseAuth.authStateChanges().listen(authStateChangesStreamListener);
+  }
 
   Future<bool> login(String email, String password) async {
     try {
@@ -16,19 +18,29 @@ class AuthServices {
           .signInWithEmailAndPassword(email: email, password: password);
       if (credential.user != null) {
         _user = credential.user;
-        return true ;
-      } else {
-        _user = null;
+        return true;
       }
-      
     } catch (e) {
       print(e);
     }
     return false;
   }
 
+  Future<bool> logOut() async {
+    try {
+      await _firebaseAuth.signOut();
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 
-  Future<void> logout()async {
-
+  void authStateChangesStreamListener(User? user) {
+    if (user != null) {
+      _user = user;
+    } else {
+      _user = null;
+    }
   }
 }
