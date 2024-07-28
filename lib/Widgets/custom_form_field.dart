@@ -19,7 +19,7 @@ class CustomFormField extends StatelessWidget {
             return null; 
           }else
           {
-            return 'Input correct Email !';
+            return 'Input correct $hintText !';
           }
         },
         decoration: InputDecoration(

@@ -1,6 +1,7 @@
 
 import 'package:ai_bot/Pages/login_page.dart';
 import 'package:ai_bot/Pages/Homepage.dart';
+import 'package:ai_bot/Pages/signup_page.dart';
 import 'package:flutter/widgets.dart';
 
 class NavigationService {
@@ -12,6 +13,7 @@ class NavigationService {
   final Map<String, Widget Function(BuildContext)> _routes = {
     "/login": (context) => const  LoginPage(),
     "/home" : (context) =>  const HomePage(),
+    "/signUp" : (context)=> const SignupPage(),
   };
 
   GlobalKey<NavigatorState>? get navigatorKey {

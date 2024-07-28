@@ -1,17 +1,20 @@
 import 'dart:io';
+import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:ai_bot/Services/alert_services.dart';
 import 'package:ai_bot/Services/auth_services.dart';
 import 'package:ai_bot/Services/navigation_services.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+// import 'package:flutter_markdown/flutter_markdown.dart' ;
+import 'package:markdown/markdown.dart' as md;
 
 class HomePage extends StatefulWidget {
-  final String ?name;
+  final String? name;
   const HomePage({super.key, this.name});
 
   @override
@@ -22,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   final GetIt _getIt = GetIt.instance;
   late final AuthServices _authServices;
   late final NavigationService _navigationService;
- late final AlertServices _alertServices ;
+  late final AlertServices _alertServices;
   @override
   void initState() {
     super.initState();
@@ -57,7 +60,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 final bool res = await _authServices.logOut();
                 if (res) {
-                  _alertServices.showToast(text: 'Logged Out', icon: Icons.check);
+                  _alertServices.showToast(
+                      text: 'Logged Out', icon: Icons.check);
                   _navigationService.pushReplacementNamed("/login");
                 }
               },
@@ -96,6 +100,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               messageOptions: const MessageOptions(
+                // markdownStyleSheet: MarkdownStyleSheet.fromCupertinoTheme(
+                //     MaterialBasedCupertinoThemeData(
+                //         materialTheme: ThemeData())),
                 currentUserContainerColor:
                     Color(0xFF21F3F3), // Light blue color
                 currentUserTextColor: Colors.black,
@@ -148,52 +155,54 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onSend(ChatMessage chatMessage) {
-    setState(() {
-      _showIcon = false; // Hide the icon when a message is sent
-      messages = [chatMessage, ...messages];
-      _isTyping = true;
-    });
-
-    String question = chatMessage.text;
-    List<Uint8List>? images;
-
-    if (chatMessage.medias?.isNotEmpty ?? false) {
-      images = [File(chatMessage.medias!.first.url).readAsBytesSync()];
-    }
-
-    geminiInstance
-        .streamGenerateContent(question, images: images)
-        .listen((event) {
-      String response = event.content?.parts?.fold(
-            "",
-            (prevElement, element) => '$prevElement${element.text}',
-          ) ??
-          "";
-      ChatMessage? lastMessage = messages.firstOrNull;
-
-      if (lastMessage != null && lastMessage.user == gemini) {
-        lastMessage.text += response;
-        setState(() {
-          messages = [lastMessage, ...messages];
-          _isTyping = false;
-        });
-      } else {
-        ChatMessage geminiMessage = ChatMessage(
-          user: gemini,
-          createdAt: DateTime.now(),
-          text: response,
-        );
-        setState(() {
-          messages = [geminiMessage, ...messages];
-          _isTyping = false;
-        });
-      }
-    }).onError((error) {
-      print('Unexpected error: $error');
+    try {
       setState(() {
-        _isTyping = false;
+        _showIcon = false; // Hide the icon when a message is sent
+        // messages = [chatMessage, ...messages];
+        _isTyping = true;
       });
-    });
+
+      String question = chatMessage.text;
+      List<Uint8List>? images;
+
+      if (chatMessage.medias?.isNotEmpty ?? false) {
+        images = [File(chatMessage.medias!.first.url).readAsBytesSync()];
+      }
+
+      setState(() {
+        messages = [chatMessage, ...messages];
+        geminiInstance
+            .streamGenerateContent(question, images: images)
+            .listen((event) {
+          ChatMessage? lastMessage = messages.firstOrNull;
+          if (lastMessage != null && lastMessage.user == gemini) {
+            lastMessage = messages.removeAt(0);
+            String response = event.content?.parts?.fold(
+                    "", (previous, current) => "$previous ${current.text}") ??
+                "";
+
+            lastMessage.text += response;
+            setState(() {
+              messages = [lastMessage!, ...messages];
+            });
+          } else {
+            String response = event.content?.parts?.fold(
+                    "", (previous, current) => "$previous ${current.text}") ??
+                "";
+
+            ChatMessage message = ChatMessage(
+              isMarkdown: true,
+                user: gemini, createdAt: DateTime.now(), text: response);
+            setState(() {
+              _isTyping = false;
+              messages = [message, ...messages];
+            });
+          }
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _imagePicker() async {

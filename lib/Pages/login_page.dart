@@ -1,10 +1,10 @@
-
 import 'package:ai_bot/Services/alert_services.dart';
 import 'package:ai_bot/Services/auth_services.dart';
 import 'package:ai_bot/Services/navigation_services.dart';
 import 'package:ai_bot/Widgets/custom_form_field.dart';
 import 'package:ai_bot/regEx.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final GetIt _getIt = GetIt.instance;
   late final AuthServices _authServices;
   late final NavigationService _navigationServices;
-  late final AlertServices _alertServices ;
+  late final AlertServices _alertServices;
 
   @override
   void initState() {
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginButton() {
     return SizedBox(
-        width: MediaQuery.sizeOf(context).width,
+      width: MediaQuery.sizeOf(context).width,
       child: MaterialButton(
         onPressed: () async {
           if (_loginPageKey.currentState?.validate() ?? false) {
@@ -125,11 +125,12 @@ class _LoginPageState extends State<LoginPage> {
             bool authenticate = await _authServices.login(email!, password!);
             if (authenticate == true) {
               // Navigator.of(context).pushReplacementNamed("/home");
-             _alertServices.showToast(text: 'Login Successful !');
+              _alertServices.showToast(text: 'Login Successful !');
               _navigationServices.pushReplacementNamed("/home");
-            }else{
-             _alertServices.showToast(text: 'Login Credentials not found or are wrong ./n Please try again or Signup');
-              
+            } else {
+              _alertServices.showToast(
+                  text:
+                      'Login Credentials not found or are wrong . Please try again or Signup');
             }
           }
         },
@@ -143,14 +144,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _signUp() {
-    return const Expanded(
+    return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text("Don't have an account? "),
-          Text("Sign Up", style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text("Don't have an account? "),
+          GestureDetector(
+            onTap: (){
+              _navigationServices.pushNamed("/signUp");
+            },
+              child: const Text("Sign Up",
+                  style: TextStyle(fontWeight: FontWeight.bold))),
         ],
       ),
     );
