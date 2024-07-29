@@ -1,6 +1,6 @@
 
 import 'package:ai_bot/Pages/login_page.dart';
-import 'package:ai_bot/Pages/Homepage.dart';
+import 'package:ai_bot/Pages/homepage.dart';
 import 'package:ai_bot/Pages/signup_page.dart';
 import 'package:flutter/widgets.dart';
 

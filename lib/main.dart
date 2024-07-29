@@ -16,7 +16,7 @@ void main() async {
 Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpFirebase();
-   await setUpGetIt();
+  await setUpGetIt();
   Gemini.init(apiKey: 'AIzaSyDjbeC4_9HFkOLcHvmBloYxCtaFqqhNlGQ');
 }
 
@@ -36,12 +36,14 @@ class MyApp extends StatelessWidget {
       navigatorKey: _navigationServices.navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Allen',
+      darkTheme: ThemeData.dark(useMaterial3: true)
+          .copyWith(textTheme: GoogleFonts.montserratTextTheme()),
       theme: ThemeData.light(
         useMaterial3: true,
       ).copyWith(textTheme: GoogleFonts.montserratTextTheme()),
-      initialRoute: _authServices.user!=null ? '/home':'/login',
+      initialRoute: _authServices.user != null ? '/home' : '/login',
       routes: _navigationServices.routes!,
-     
+      themeMode: ThemeMode.system,
     );
   }
 }

@@ -36,6 +36,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       body: _buildUi(),
     );
   }
@@ -46,7 +48,13 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
         child: Column(
           children: [
+            // const Spacer(),
             _header(),
+            Flexible(child: Image.asset('assets/images/ic_launcher_round.png')),
+            const Text(
+              'Login to Continue',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             _form(),
             _signUp(),
           ],
@@ -59,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -84,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
         key: _loginPageKey,
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomFormField(
@@ -152,9 +160,9 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           const Text("Don't have an account? "),
           GestureDetector(
-            onTap: (){
-              _navigationServices.pushNamed("/signUp");
-            },
+              onTap: () {
+                _navigationServices.pushNamed("/signUp");
+              },
               child: const Text("Sign Up",
                   style: TextStyle(fontWeight: FontWeight.bold))),
         ],

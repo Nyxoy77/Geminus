@@ -1,5 +1,5 @@
+// ignore: file_names
 import 'dart:io';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:ai_bot/Services/alert_services.dart';
@@ -10,8 +10,6 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:flutter_markdown/flutter_markdown.dart' ;
-import 'package:markdown/markdown.dart' as md;
 
 class HomePage extends StatefulWidget {
   final String? name;
@@ -65,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   _navigationService.pushReplacementNamed("/login");
                 }
               },
-              icon: Icon(Icons.logout))
+              icon: const Icon(Icons.logout))
         ],
         centerTitle: true,
         title: BounceInDown(
@@ -92,6 +90,7 @@ class _HomePageState extends State<HomePage> {
               onSend: onSend,
               messages: messages,
               inputOptions: InputOptions(
+                //  inputToolbarMargin: EdgeInsets.all(8),
                 leading: [
                   IconButton(
                     onPressed: _imagePicker,
@@ -106,8 +105,8 @@ class _HomePageState extends State<HomePage> {
                 currentUserContainerColor:
                     Color(0xFF21F3F3), // Light blue color
                 currentUserTextColor: Colors.black,
-                marginSameAuthor: EdgeInsets.only(top: 8),
-                marginDifferentAuthor: EdgeInsets.all(8),
+                // marginSameAuthor: EdgeInsets.only(top: 8),
+                // marginDifferentAuthor: EdgeInsets.all(8),
                 containerColor:
                     Color(0xFFEEEEEE), // Equivalent to Colors.grey[200]
                 textColor: Colors.black,
@@ -154,14 +153,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onSend(ChatMessage chatMessage) {
+   void onSend(ChatMessage chatMessage) {
     try {
-      setState(() {
-        _showIcon = false; // Hide the icon when a message is sent
-        // messages = [chatMessage, ...messages];
-        _isTyping = true;
-      });
-
       String question = chatMessage.text;
       List<Uint8List>? images;
 
@@ -170,17 +163,19 @@ class _HomePageState extends State<HomePage> {
       }
 
       setState(() {
+        _isTyping = true;
+        _showIcon = false;
         messages = [chatMessage, ...messages];
-        geminiInstance
-            .streamGenerateContent(question, images: images)
-            .listen((event) {
+      });
+
+      geminiInstance.streamGenerateContent(question, images: images).listen(
+        (event) {
           ChatMessage? lastMessage = messages.firstOrNull;
           if (lastMessage != null && lastMessage.user == gemini) {
             lastMessage = messages.removeAt(0);
             String response = event.content?.parts?.fold(
                     "", (previous, current) => "$previous ${current.text}") ??
                 "";
-
             lastMessage.text += response;
             setState(() {
               messages = [lastMessage!, ...messages];
@@ -189,19 +184,35 @@ class _HomePageState extends State<HomePage> {
             String response = event.content?.parts?.fold(
                     "", (previous, current) => "$previous ${current.text}") ??
                 "";
-
             ChatMessage message = ChatMessage(
-              isMarkdown: true,
-                user: gemini, createdAt: DateTime.now(), text: response);
+                isMarkdown: true,
+                user: gemini,
+                createdAt: DateTime.now(),
+                text: response);
             setState(() {
-              _isTyping = false;
               messages = [message, ...messages];
             });
           }
-        });
-      });
+        },
+        onDone: () {
+          setState(() {
+            _isTyping = false;
+          });
+        },
+        onError: (error) {
+          setState(() {
+            _showIcon = false;
+            _isTyping = false;
+          });
+          print("Error: $error");
+        },
+      );
     } catch (e) {
       print(e);
+      setState(() {
+        _showIcon = false;
+        _isTyping = false;
+      });
     }
   }
 
