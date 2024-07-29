@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Chat Bot App is a Flutter-based application that utilizes the Gemini API for processing user queries and providing responses. It allows users to type messages or send images whose descriptions they want to know. The app features a user-friendly interface using the Gemini package and includes functionality for both light and dark modes.
+The Geminus App is a Flutter-based application that utilizes the Gemini API for processing user queries and providing responses. It allows users to type messages or send images whose descriptions they want to know. The app features a user-friendly interface using the Gemini package and includes functionality for both light and dark modes.
 
 ## Features
 
