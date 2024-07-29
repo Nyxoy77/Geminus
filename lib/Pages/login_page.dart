@@ -3,6 +3,7 @@ import 'package:ai_bot/Services/auth_services.dart';
 import 'package:ai_bot/Services/navigation_services.dart';
 import 'package:ai_bot/Widgets/custom_form_field.dart';
 import 'package:ai_bot/regEx.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
@@ -116,7 +117,8 @@ class _LoginPageState extends State<LoginPage> {
               },
               obscureText: true,
             ),
-            _loginButton()
+            _loginButton(),
+            _googleButton()
           ],
         ),
       ),
@@ -148,6 +150,24 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
+    );
+  }
+
+  Widget _googleButton() {
+    return TextButton(
+      onPressed: () async {
+        final bool authenticate = await _authServices.loginWithGoogle();
+        if (authenticate == true) {
+          // Navigator.of(context).pushReplacementNamed("/home");
+          _alertServices.showToast(text: 'Login Successful !');
+          _navigationServices.pushReplacementNamed("/home");
+        } else {
+          _alertServices.showToast(
+              text:
+                  'Login Credentials not found or are wrong . Please try again or Signup');
+        }
+      },
+      child: Flexible(child: Image.asset('assets/images/login-with-google-icon-16.jpg')),
     );
   }
 
