@@ -1,4 +1,4 @@
-# Chat Bot App
+# Geminus
 
 ## Overview
 
