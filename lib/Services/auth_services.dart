@@ -60,11 +60,9 @@ class AuthServices {
 
   Future<bool> loginWithGoogle() async {
     try {
-      // Initialize Google Sign-In
-      final GoogleSignIn googleSignIn = GoogleSignIn();
 
       // Start the sign-in process
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       // Check if the user is successfully signed in
       if (googleUser == null) {
@@ -84,7 +82,7 @@ class AuthServices {
 
       // Sign in to Firebase with the obtained credential
       final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+          await _firebaseAuth.signInWithCredential(credential);
 
       // Check if the user is successfully signed in
       if (userCredential.user != null) {
