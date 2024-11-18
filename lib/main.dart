@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   await setUp();
-  // Gemini.init(apiKey: 'AIzaSyDjbeC4_9HFkOLcHvmBloYxCtaFqqhNlGQ');
+ 
   runApp(MyApp());
 }
 
@@ -17,7 +17,7 @@ Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpFirebase();
   await setUpGetIt();
-  Gemini.init(apiKey: 'AIzaSyDjbeC4_9HFkOLcHvmBloYxCtaFqqhNlGQ');
+  Gemini.init(apiKey: api_key);
 }
 
 class MyApp extends StatelessWidget {
